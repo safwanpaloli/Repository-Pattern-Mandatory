@@ -9,12 +9,18 @@ class TaskController extends Controller
         protected TaskService $service
     ) {}
 
+    public function index()
+    {
+        return TaskResource::collection(
+            app(TaskRepositoryInterface::class)->all()
+        );
+    }
+
     public function store(StoreTaskRequest $request)
     {
-        $this->service->store($request->validated());
-
-        return redirect()
-            ->route('tasks.index')
-            ->with('success', 'Task created successfully');
+        return response()->json(
+            $this->service->store($request->validated()),
+            201
+        );
     }
 }
