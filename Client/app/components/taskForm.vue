@@ -2,7 +2,7 @@
   <div class="app">
     <!-- Header -->
     <header class="header">
-      <h1>Task Detail + AI Summary</h1>
+      <h1>Edit Task</h1>
       <button class="btn-primary">+ New Task</button>
     </header>
 
@@ -15,43 +15,59 @@
     </div>
 
     <div class="layout">
-      <!-- Main Card -->
+      <!-- Main Edit Card -->
       <main class="card">
         <div class="card-header">
           <h2>Launch New Marketing Campaign</h2>
           <span class="dots">⋯</span>
         </div>
 
-        <div class="tags">
-          <span class="tag">Status · In Progress</span>
-          <span class="tag high">Priority · High</span>
+        <!-- Title -->
+        <input
+          class="input"
+          type="text"
+          placeholder="e.g. Launch New Campaign"
+          v-model="task.title"
+        />
+
+        <!-- Description -->
+        <textarea
+          class="textarea"
+          rows="4"
+          placeholder="Task description"
+          v-model="task.description"
+        ></textarea>
+
+        <!-- Priority -->
+        <div class="section">
+          <label>Priority</label>
+          <div class="priority">
+            <button
+              v-for="p in priorities"
+              :key="p"
+              :class="['pill', { active: task.priority === p }]"
+              @click="task.priority = p"
+            >
+              {{ p }}
+            </button>
+          </div>
         </div>
 
-        <section class="section">
-          <h3>Description</h3>
-          <p><strong>Assigned to:</strong> Jane Doe</p>
-          <input type="date" value="2024-12-31" />
+        <!-- Due Date -->
+        <div class="section">
+          <label>Due Date</label>
+          <input class="input" type="date" v-model="task.dueDate" />
+        </div>
 
-          <p class="desc">
-            Plan and execute a comprehensive marketing campaign across
-            multiple channels, including content creation and promotion.
-          </p>
-        </section>
-
-        <section class="section ai">
-          <h3>AI-Generated Summary</h3>
-          <p>
-            Execute a multi-channel marketing campaign focusing on content
-            creation, audience engagement, and performance tracking.
-          </p>
-        </section>
-
-        <section class="section ai">
-          <p>
-            <strong>AI Summary:</strong> Comprehensive campaign rollout with
-            high priority execution.
-          </p>
-        </section>
+        <!-- Assign To -->
+        <div class="section">
+          <label>Assign To</label>
+          <select class="input" v-model="task.assignee">
+            <option>Samy Lerton</option>
+            <option>Jane Doe</option>
+            <option>Admin User</option>
+          </select>
+        </div>
 
         <button class="btn-save">Save Changes</button>
       </main>
@@ -75,24 +91,37 @@
             <div v-for="m in months" :key="m" class="bar"></div>
           </div>
         </div>
-
-        <button class="btn-outline">Refresh AI Summary</button>
       </aside>
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { reactive } from 'vue'
 
-<script setup>
+const {
+    taskId
+} = defineProps<{
+    taskId?: number
+}>()
+const priorities = ['Low', 'Medium', 'High']
+
+const task = reactive({
+  title: 'Launch New Marketing Campaign',
+  description:
+    'Plan and execute a marketing campaign across channels with content creation and tracking.',
+  priority: 'Low',
+  dueDate: '2024-12-31',
+  assignee: 'Samy Lerton',
+})
+
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May']
 </script>
 
 <style scoped>
-/* Layout */
 .app {
   min-height: 100vh;
   padding: 30px;
   background: linear-gradient(135deg, #1f2937, #111827);
-  color: #111;
   font-family: Inter, sans-serif;
 }
 
@@ -115,7 +144,7 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May']
   border: none;
 }
 
-/* Main Layout */
+/* Layout */
 .layout {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -135,42 +164,36 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May']
   justify-content: space-between;
 }
 
-.tags {
-  margin: 12px 0;
-}
-
-.tag {
-  background: #e5e7eb;
-  padding: 6px 12px;
-  border-radius: 999px;
-  margin-right: 8px;
-  font-size: 13px;
-}
-
-.tag.high {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.section {
-  margin-top: 20px;
-}
-
-.section input {
-  margin: 8px 0;
-  padding: 10px;
-  border-radius: 10px;
+.input,
+.textarea {
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 12px;
   border: 1px solid #ddd;
 }
 
-.desc {
-  color: #555;
+.section {
+  margin-top: 18px;
 }
 
-.ai {
-  background: #f3f4f6;
-  padding: 14px;
-  border-radius: 12px;
+.priority {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.pill {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  background: #e5e7eb;
+  cursor: pointer;
+}
+
+.pill.active {
+  background: #2563eb;
+  color: #fff;
 }
 
 /* Buttons */
@@ -184,21 +207,12 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May']
 
 .btn-save {
   margin-top: 24px;
-  background: #2563eb;
-  color: #fff;
-  padding: 14px;
   width: 100%;
+  padding: 14px;
   border-radius: 14px;
   border: none;
-}
-
-.btn-outline {
-  margin-top: 16px;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #3b82f6;
-  color: #3b82f6;
-  background: transparent;
+  background: #2563eb;
+  color: #fff;
 }
 
 /* Sidebar */
@@ -239,8 +253,8 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May']
 
 .bar {
   width: 20px;
-  background: #3b82f6;
   height: 100%;
+  background: #3b82f6;
   border-radius: 6px;
 }
 </style>
