@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\TaskPriority;
+use App\TaskStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
@@ -17,6 +19,11 @@ class Task extends Model
         'ai_priority'
     ];
 
+    protected $casts = [
+        'priority' => TaskPriority::class,
+        'status' => TaskStatus::class,
+        'due_date' => 'date'
+    ];
 
     public function user()
     {

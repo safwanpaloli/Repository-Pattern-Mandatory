@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Repositories\Services;
+
+use App\Repositories\Contracts\TaskRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class TaskService
@@ -18,5 +21,10 @@ class TaskService
 
             return $this->repo->update($task->id, $aiData);
         });
+    }
+
+    public function status()
+    {
+        return $this->repo->all();
     }
 }
