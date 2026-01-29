@@ -287,3 +287,16 @@ Or during initial setup:
 ```bash
 php artisan migrate --seed
 ```
+## 📸 Screenshots
+
+### Dashboard
+![Task List](screenshots/dashboard.png)
+
+### Task List Page
+![Task List](screenshots/taskList.png)
+
+### Task Create Page
+![Task Create](screenshots/AddTask.png)
+
+### Task Detail + AI Summary
+![Task Detail](screenshots/taskDetail_Ai_Summary.png)
