@@ -27,8 +27,7 @@
       <!-- Main Edit Card -->
       <main class="card">
         <div class="card-header">
-          <h2>Launch New Marketing Campaign</h2>
-          <span class="dots">⋯</span>
+          <h2 class="text-xl font-semibold" v-if="task.title">{{ task.title }}</h2>
         </div>
 
         <!-- Title -->
@@ -72,7 +71,13 @@
         <div class="section">
           <label>Assign To</label>
           <select class="input" v-model="task.assigned_to">
-            <option v-for="user in filteredUsers" :key="user.id" :value="user.id">{{ user.name }}</option>
+            <option
+              v-for="user in filteredUsers"
+              :key="user.id"
+              :value="user.id"
+            >
+              {{ user.name }}
+            </option>
           </select>
         </div>
 
@@ -87,28 +92,46 @@
   </div>
 </template>
 <script setup lang="ts">
-import { reactive } from "vue";
 import useTask from "../composables/useTask";
+import moment from "moment";
 
 const { taskId } = defineProps<{
   taskId?: number;
 }>();
 
 const {
-    filteredUsers,
-    users,
-    fetchUsers,
-    priorities,
-    task,
-    fetchTasks,
-    createTask
-} = useTask()
+  taskList,
+  filteredUsers,
+  users,
+  fetchUsers,
+  priorities,
+  task,
+  fetchTasks,
+  createTask,
+} = useTask();
 
 await fetchUsers();
 
-task.assigned_to = filteredUsers.value[0].id
-</script>
+if (!taskId && filteredUsers.value.length) {
+  task.assigned_to = filteredUsers.value[0].id;
+}
 
+if (taskId) {
+  await fetchTasks();
+
+  const existingTask = taskList.find((t) => t.id == taskId);
+
+  if (existingTask) {
+    for (const key in existingTask) {
+      if (key === "due_date") {
+        task[key] = moment(existingTask[key]).format("YYYY-MM-DD");
+      } else {
+        task[key] = existingTask[key];
+      }
+    }
+  }
+}
+</script>
 <style scoped>
 .app {
   min-height: 100vh;

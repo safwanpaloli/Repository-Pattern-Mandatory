@@ -28,8 +28,6 @@
           </NuxtLink>
         </div>
       </div>
-
-      <!-- KPI Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <DashboardCard title="Total Tasks" :value="stats.total" color="blue" />
         <DashboardCard
@@ -41,17 +39,15 @@
         <DashboardCard title="High Priority" :value="stats.high" color="red" />
       </div>
 
-      <!-- Chart Section -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Chart -->
-        <div class="lg:col-span-6 bg-white rounded-2xl shadow-sm border p-6">
+        <!-- <div class="lg:col-span-6 bg-white rounded-2xl shadow-sm border p-6">
           <h2 class="text-lg font-semibold mb-1">Task Distribution</h2>
           <p class="text-sm text-gray-500 mb-4">Overview of task statuses</p>
 
           <Bar :data="chartData" :options="chartOptions" />
-        </div>
+        </div> -->
       </div>
-      <button @click="fetchStatus">Fetching</button>
     </div>
   </main>
 </template>
@@ -61,6 +57,8 @@ const {
   stats,
   chartData,
   chartOptions,
-  fetchStatus
+  fetchTasks
 } = useDashboard()
+
+await fetchTasks()
 </script>

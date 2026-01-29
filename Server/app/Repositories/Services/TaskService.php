@@ -15,7 +15,10 @@ class TaskService
     public function store(array $data)
     {
         return DB::transaction(function () use ($data) {
-            $task = $this->repo->create($data);
+
+            $task = empty($data['id'])
+                ? $this->repo->create($data)
+                : $this->repo->update($data['id'], $data);
 
             $aiData = $this->aiService->generateSummary($task);
 

@@ -50,7 +50,7 @@ export default function () {
 
     async function getAiSummary(taskId:number)
     {
-       const {data: aiSummary} = await $axios.get(`task/${taskId}`)
+       const {data: aiSummary} = await $axios.get(`tasks/${taskId}/ai-summary`)
 
        task.ai_summary = aiSummary.data.summary
        task.ai_priority = aiSummary.data.priority

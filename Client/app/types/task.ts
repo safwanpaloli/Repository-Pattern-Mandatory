@@ -1,3 +1,4 @@
+import type { User } from "./user"
 
 export type TaskPriority = 'low' | 'medium' | 'high'
 export type TaskStatus = 'pending' | 'in_progress' | 'completed'
@@ -13,5 +14,6 @@ export interface Task {
   ai_priority: TaskPriority,
   assigned_to: string,
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
+  user: User
 }
