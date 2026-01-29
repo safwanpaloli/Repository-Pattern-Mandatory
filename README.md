@@ -220,3 +220,85 @@ Project uses **Conventional Commits**:
 - [x] README documentation
 
 ---
+
+## 👨‍💻 Author
+
+Developed as part of a **Laravel + Nuxt Machine Test**, focusing on **real-world architecture and best practices**.
+
+
+---
+
+## 🧪 User Seeding (Dummy Data)
+
+Dummy users are seeded for development and testing, including **admin** and **user** roles.
+
+### Seeded Accounts
+
+| Role  | Email              | Password |
+|-------|--------------------|----------|
+| Admin | admin@example.com  | password |
+| User  | john@example.com   | password |
+| User  | jane@example.com   | password |
+
+### Seeder File
+`database/seeders/UserSeeder.php`
+
+```php
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
+class UserSeeder extends Seeder
+{
+    public function run(): void
+    {
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'role' => 'admin',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+        ]);
+
+        User::create([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'role' => 'user',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+        ]);
+
+        User::create([
+            'name' => 'Jane Smith',
+            'email' => 'jane@example.com',
+            'role' => 'user',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+        ]);
+    }
+}
+```
+
+### Run Seeder
+
+```bash
+php artisan db:seed --class=UserSeeder
+```
+
+Or during initial setup:
+
+```bash
+php artisan migrate --seed
+```
+
+### Why This Exists
+
+- Validate **role-based authorization**
+- Assign tasks to users
+- Speed up local development
+- Ensure consistent test data
+
